@@ -1,84 +1,102 @@
+//
+// Created by linglx on 18-3-28.
+// contact me by email(linglx@foxmail.com)
+//
+
 #include <iostream>
 
 namespace prompt{
 
-#define RESET "\033[0m" 
-#define BLACK "\033[30m" /* Black */ 
-#define RED "\033[31m" /* Red */ 
-#define GREEN "\033[32m" /* Green */ 
-#define YELLOW "\033[33m" /* Yellow */ 
-#define BLUE "\033[34m" /* Blue */ 
-#define MAGENTA "\033[35m" /* Magenta */ 
-#define CYAN "\033[36m" /* Cyan */ 
-#define WHITE "\033[37m" /* White */ 
-#define BOLDBLACK "\033[1m\033[30m" /* Bold Black */ 
-#define BOLDRED "\033[1m\033[31m" /* Bold Red */ 
-#define BOLDGREEN "\033[1m\033[32m" /* Bold Green */ 
-#define BOLDYELLOW "\033[1m\033[33m" /* Bold Yellow */ 
-#define BOLDBLUE "\033[1m\033[34m" /* Bold Blue */ 
-#define BOLDMAGENTA "\033[1m\033[35m" /* Bold Magenta */ 
-#define BOLDCYAN "\033[1m\033[36m" /* Bold Cyan */ 
-#define BOLDWHITE "\033[1m\033[37m" /* Bold White */ 
+#define RESET "\033[0m"
+//#define BLACK "\033[30m" /* Black */
+//#define RED "\033[31m" /* Red */
+//#define GREEN "\033[32m" /* Green */
+//#define YELLOW "\033[33m" /* Yellow */
+//#define BLUE "\033[34m" /* Blue */
+//#define MAGENTA "\033[35m" /* Magenta */
+//#define CYAN "\033[36m" /* Cyan */
+//#define WHITE "\033[37m" /* White */
+//#define BOLDBLACK "\033[1m\033[30m" /* Bold Black */
+//#define BOLDRED "\033[1m\033[31m" /* Bold Red */
+//#define BOLDGREEN "\033[1m\033[32m" /* Bold Green */
+//#define BOLDYELLOW "\033[1m\033[33m" /* Bold Yellow */
+//#define BOLDBLUE "\033[1m\033[34m" /* Bold Blue */
+//#define BOLDMAGENTA "\033[1m\033[35m" /* Bold Magenta */
+//#define BOLDCYAN "\033[1m\033[36m" /* Bold Cyan */
+//#define BOLDWHITE "\033[1m\033[37m" /* Bold White */
 
 using namespace std;
 
-class INFO {
-  public:
-  template<typename T>
-  INFO& operator<<(const T& msg);
-  INFO& operator<<(int& val);
+enum COLOR{
+  BLACK = 0,
+  RED,
+  GREEN,
+  YELLOW,
+  CYAN,
+  NORMAL
 };
-template <typename T>
-INFO& INFO::operator<<(const T& msg){
-  cout << GREEN << msg << RESET;
-}
-INFO& INFO::operator<<(int& val){
-  cout << val << flush;
-}
-INFO info;
 
-class ERROR {
-  public:
-  template<typename T>
-  ERROR& operator<<(const T& msg);
-  ERROR& operator<<(int& val);
+char* Color(COLOR& c){
+  switch (c)
+  {
+    case BLACK:
+      return const_cast<char *>("\033[30m"); /* Black */
+    case RED:
+      return const_cast<char *>("\033[31m"); /* RED */
+    case GREEN:
+      return const_cast<char *>("\033[32m"); /* GREEN */
+    case YELLOW:
+      return const_cast<char *>("\033[33m"); /* Yellow */
+    case CYAN:
+      return const_cast<char *>("\033[36m"); /* CYAN */
+    case NORMAL:
+    default:
+      return const_cast<char *>("\033[0m"); /* RESET */
+  }
 };
-template <typename T>
-ERROR& ERROR::operator<<(const T& msg){
-  cout << RED << msg << RESET;
-}
-ERROR& ERROR::operator<<(int& val){
-  cout << val << flush;
-}
-ERROR error;
 
-class WARNING {
+class Base {
   public:
+  explicit Base(COLOR c):c_(c){};
   template<typename T>
-  WARNING& operator<<(const T& msg);
-  WARNING& operator<<(int& val);
-};
-template <typename T>
-WARNING& WARNING::operator<<(const T& msg){
-  cout << YELLOW << msg << RESET;
-}
-WARNING& WARNING::operator<<(int& val){
-  cout << val << flush;
-}
-WARNING warning;
+  Base& operator<<(const T& msg);
+  Base& operator<<(int& val);
 
-class DEBUG {
-  public:
-  template<typename T>
-  DEBUG& operator<<(const T& msg);
-  DEBUG& operator<<(int& val);
+  private:
+  COLOR c_;
 };
 template <typename T>
-DEBUG& DEBUG::operator<<(const T& msg){
-  cout << CYAN << msg << RESET;
+Base& Base::operator<<(const T& msg){
+  cout << Color(c_) << msg;
+  return *this;
 }
-DEBUG& DEBUG::operator<<(int& val){
+Base& Base::operator<<(int& val){
   cout << val << flush;
+  return *this;
 }
-DEBUG debug;
+
+class INFO : public Base{
+  public:
+  INFO():Base(GREEN){};
+  explicit INFO(COLOR c):Base(c){};
+};
+
+class WARNING : public Base{
+  public:
+  WARNING():Base(YELLOW){};
+  explicit WARNING(COLOR c):Base(c){};
+};
+
+class ERROR : public Base{
+  public:
+  ERROR():Base(RED){};
+  explicit ERROR(COLOR c):Base(c){};
+};
+
+class DEBUG : public Base{
+  public:
+  DEBUG():Base(CYAN){};
+  explicit DEBUG(COLOR c):Base(c){};
+};
+
 }//namespace prompt
