@@ -11,6 +11,7 @@ int main()
   INFO() << "hello, world" << "\t" << 1 << '\n';
   INFO(CYAN) << "hello, world" << "\t" << 2 << '\n';
   INFO(NORMAL) << "-------------------------------" << '\n';
+
   WARNING() << "this is warning" << '\t' << 2 << '\n';
   DEBUG() << "this is debug message" << '\t' << 3 << '\n';
   ERROR() << "this is error message" << '\t' << 4 << '\n';
