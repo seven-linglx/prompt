@@ -99,4 +99,10 @@ class DEBUG : public Base{
   explicit DEBUG(COLOR c):Base(c){};
 };
 
+class NOR : public Base{
+ public:
+  NOR():Base(NORMAL){};
+  explicit NOR(COLOR c):Base(c){};
+};
+
 }//namespace prompt
