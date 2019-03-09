@@ -1,0 +1,18 @@
+#+TITLE:C/C++控制台带颜色打印信息
+#+SETUP:indent
+* 简介（Indroduction）
+  让cout带颜色输出消息，分成INFO,WARNING,DEBUG,ERROR,NORMAL几个级别，使用时将prompt.h或prompt_simple.h文件放在工程目录下，直接使用。
+* 编译与运行（Compile&Run）
+  目录下包含一个测试文件main.cpp，编译运行，可以看到效果。
+  #+BEGIN_SRC sh
+    mkdir build
+    cd build
+    cmake ..
+    make
+    ./[target algorithm]
+  #+END_SRC
+* 目录（Content）
+  - CMakeLists.txt cmake编译配置文件
+  - main.cpp 测试文件
+  - prompt.h 实现文件，里面使用类的继承和重载操作符等方法来实现带颜色输出
+  - prompt_sample.h 另一个实现文件，里面使用简单的预定义方式实现带颜色输出
